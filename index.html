@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aroon Playz - Sensitivity Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #030303;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            overflow-x: hidden;
+            padding: 15px;
+        }
+
+        .screen {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            background: rgba(12, 12, 12, 0.98);
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 0 45px rgba(255, 0, 0, 0.4);
+            border: 2px solid #ff3333;
+            text-align: center;
+            animation: fadeIn 0.4s ease-in-out;
+            position: relative;
+        }
+
+        .active-screen {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Top Right Buttons Container */
+        .top-nav-buttons {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .top-pro-header, .top-profile-header {
+            background: rgba(255, 51, 51, 0.15);
+            border: 1px solid #ff3333;
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.3s;
+            box-shadow: 0 0 8px rgba(255, 51, 51, 0.4);
+        }
+
+        .top-pro-header:hover, .top-profile-header:hover {
+            background: #ff3333;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.9);
+        }
+
+        .top-pro-header span, .top-profile-header span {
+            color: #ff3333;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .top-pro-header:hover span, .top-profile-header:hover span {
+            color: #fff;
+        }
+
+        .lightning-icon {
+            color: #ff3333;
+            font-size: 12px;
+            animation: pulseGlow 1.5s infinite;
+        }
+
+        .top-pro-header:hover .lightning-icon, .top-profile-header:hover span {
+            color: #fff;
+        }
+
+        @keyframes pulseGlow {
+            0% { text-shadow: 0 0 5px #ff3333; }
+            50% { text-shadow: 0 0 15px #ff3333, 0 0 25px #ff9999; }
+            100% { text-shadow: 0 0 5px #ff3333; }
+        }
+
+        /* Splash Screen */
+        #splash-screen h1 {
+            color: #ff3333;
+            font-size: 32px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255, 51, 51, 0.8);
+        }
+
+        #splash-screen p {
+            color: #b3b3b3;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .loading-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #1a1a1a;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #444;
+        }
+
+        .loading-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff3333, #ff9999);
+            animation: loadProgress 2s linear forwards;
+            box-shadow: 0 0 10px #ff3333;
+        }
+
+        @keyframes loadProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* Headings & Text */
+        h2 {
+            color: #ff3333;
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .desc-txt {
+            color: #aaa;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        /* Buttons */
+        .action-btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #ff3333, #cc0000);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #ff4d4d, #e60000);
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.8);
+        }
+
+        .action-btn:disabled {
+            background: #333 !important;
+            color: #777 !important;
+            cursor: not-allowed !important;
+            box-shadow: none !important;
+            border: 1px solid #444;
+        }
+
+        /* Forms & Inputs */
+        .input-group {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            color: #ff9999;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            background: #111;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: #ff3333;
+            box-shadow: 0 0 8px rgba(255, 51, 51, 0.5);
+        }
+
+        .error-msg {
+            color: #ff3333;
+            font-size: 12px;
+            margin-top: 6px;
+            font-weight: bold;
+            display: none;
+            background: rgba(255, 51, 51, 0.1);
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid #ff3333;
+        }
+
+        .switch-auth {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 15px;
+        }
+
+        .switch-auth span {
+            color: #ff3333;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* Result Box */
+        .result-box {
+            margin-top: 15px;
+            background: #111;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ff3333;
+            text-align: left;
+            display: none;
+        }
+
+        .sens-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #222;
+            font-size: 12px;
+        }
+
+        .sens-row span:last-child {
+            color: #ff9999;
+            font-weight: bold;
+        }
+
+        /* Social Media Buttons Grid */
+        .social-links-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .social-btn {
+            padding: 10px 5px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            color: #fff;
+            display: block;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-yt { background: #ff0000; }
+        .btn-tk { background: #00f2fe; color: #000; }
+        .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+
+        .social-btn.clicked {
+            border: 2px solid #00cc44;
+        }
+
+        /* POPUP MODAL STYLES */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 15px;
+        }
+
+        .modal-content {
+            background: #111;
+            border: 2px solid #ff9900;
+            width: 100%;
+            max-width: 480px;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 153, 0, 0.4);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            color: #aaa;
+            font-size: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .pro-card {
+            background: #161616;
+            border: 1px solid #ff9900;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+        }
+
+        .pro-info h3 {
+            color: #fff;
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+
+        .pro-info p {
+            color: #ff9900;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .plan-status-badge {
+            font-size: 10px;
+            font-weight: bold;
+            margin-top: 3px;
+            display: block;
+            color: #777;
+        }
+
+        .insta-buy-btn {
+            background: linear-gradient(135deg, #ff9900, #ff6600);
+            color: #000;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .key-box {
+            background: #1a1a1a;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #00cc44;
+            margin-top: 12px;
+        }
+
+        .key-status {
+            font-size: 11px;
+            margin-top: 6px;
+            font-weight: bold;
+        }
+
+        /* PROFILE MODAL INFO ROWS */
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            background: #181818;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            border: 1px solid #333;
+            text-align: left;
+        }
+        .profile-row span:last-child {
+            color: #ff9999;
+            font-weight: bold;
+        }
+
+        /* ADMIN PANEL STYLES */
+        .admin-user-card {
+            background: #181818;
+            border: 1px solid #ff3333;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        .admin-user-card span {
+            color: #ff9999;
+        }
+
+        .developer-tag {
+            font-size: 10px;
+            color: #ff3333;
+            font-weight: bold;
+            margin-top: 15px;
+            border-top: 1px solid #222;
+            padding-top: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .admin-link-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .admin-link-btn:hover {
+            color: #ff3333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Splash Screen -->
+    <div id="splash-screen" class="screen active-screen">
+        <h1>AROON PLAYZ</h1>
+        <p>Loading Pro Sensitivity Tool...</p>
+        <div class="loading-bar-container">
+            <div class="loading-bar"></div>
+        </div>
+    </div>
+
+    <!-- 2. Mandatory Initial Social Verification Screen -->
+    <div id="social-verify-screen" class="screen">
+        <h2>🔒 Follow Required</h2>
+        <p class="desc-txt">Complete all 3 follows below to unlock the portal</p>
+        
+        <div class="social-links-grid" style="margin-bottom: 20px;">
+            <a href="https://youtube.com/@aroonplayzofficial?si=ltIAWi4f_TC85WzR" target="_blank" class="social-btn btn-yt" id="link-yt" onclick="markFollowed('yt')">1. Subscribe YT</a>
+            <a href="https://vm.tiktok.com/ZNREgB7Yp" target="_blank" class="social-btn btn-tk" id="link-tk" onclick="markFollowed('tk')">2. Follow TikTok</a>
+            <a href="https://instagram.com/aroonplayzofficial?igsh=aWtuY2Vpdm04YzNp" target="_blank" class="social-btn btn-ig" id="link-ig" onclick="markFollowed('ig')">3. Follow Insta</a>
+        </div>
+
+        <button class="action-btn" id="verify-follow-btn" onclick="verifySocialFollow()" disabled>🔒 Verify Status Follow (0/3 Completed)</button>
+        <div class="developer-tag">DEVELOPED BY AROON PLAYZ</div>
+    </div>
+
+    <!-- 3. Register Screen -->
+    <div id="register-screen" class="screen">
+        <h2>Register Account</h2>
+        <p class="desc-txt">Create your profile to access portal</p>
+        
+        <form onsubmit="handleRegister(event)">
+            <div class="input-group">
+                <label for="reg-name">Full Name</label>
+                <input type="text" id="reg-name" placeholder="Enter your name" required>
+            </div>
+            <div class="input-group">
+                <label for="reg-email">Email Address</label>
+                <input type="email" id="reg-email" placeholder="Enter email" required>
+            </div>
+            <div class="input-group">
+                <label for="reg-pass">Password</label>
+                <input type="password" id="reg-pass" placeholder="Create password" required>
+            </div>
+            <div id="reg-error" class="error-msg"></div>
+            <button type="submit" class="action-btn">Register Now</button>
+        </form>
+        <div class="switch-auth">Already have an account? <span onclick="showScreen('login-screen')">Login here</span></div>
+        <button class="admin-link-btn" onclick="showScreen('admin-login-screen')">🔐 Admin Portal</button>
+        <div class="developer-tag">DEVELOPED BY AROON PLAYZ</div>
+    </div>
+
+    <!-- 4. Login Screen -->
+    <div id="login-screen" class="screen">
+        <h2>User Login</h2>
+        <p class="desc-txt">Enter your credentials</p>
+        
+        <form onsubmit="handleLogin(event)">
+            <div class="input-group">
+                <label for="log-email">Email Address</label>
+                <input type="email" id="log-email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-group">
+                <label for="log-pass">Password</label>
+                <input type="password" id="log-pass" placeholder="Enter password" required>
+            </div>
+            <div id="log-error" class="error-msg">⚠️ Invalid Email or Password!</div>
+            <button type="submit" class="action-btn">Login to Portal</button>
+        </form>
+        <div class="switch-auth">Don't have an account? <span onclick="showScreen('register-screen')">Register here</span></div>
+        <button class="admin-link-btn" onclick="showScreen('admin-login-screen')">🔐 Admin Portal</button>
+        <div class="developer-tag">DEVELOPED BY AROON PLAYZ</div>
+    </div>
+
+    <!-- 5. Main Dashboard Screen -->
+    <div id="dashboard-screen" class="screen">
+        <div class="top-nav-buttons">
+            <div class="top-profile-header" onclick="openProfileModal()">
+                <span>👤 Me</span>
+            </div>
+            <div class="top-pro-header" onclick="openProModal()">
+                <span class="lightning-icon">⚡</span>
+                <span>PRO</span>
+            </div>
+        </div>
+
+        <h2>Aroon Playz Portal</h2>
+        <p class="desc-txt" id="welcome-user-txt">Welcome!</p>
+        
+        <div class="social-links-grid">
+            <a href="https://youtube.com/@aroonplayzofficial?si=ltIAWi4f_TC85WzR" target="_blank" class="social-btn btn-yt">Subscribe YT</a>
+            <a href="https://vm.tiktok.com/ZNREgB7Yp" target="_blank" class="social-btn btn-tk">Follow TikTok</a>
+            <a href="https://instagram.com/aroonplayzofficial?igsh=aWtuY2Vpdm04YzNp" target="_blank" class="social-btn btn-ig">Follow Insta</a>
+        </div>
+
+        <div class="input-group">
+            <label for="device-name">Enter Your Device Model</label>
+            <input type="text" id="device-name" placeholder="e.g. Redmi Note 10, iPhone 11">
+        </div>
+
+        <div class="input-group">
+            <label for="game-version">Select Game Version</label>
+            <select id="game-version">
+                <option value="Free Fire">Free Fire</option>
+                <option value="Free Fire Max">Free Fire Max</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="device-ram">Select Device RAM</label>
+            <select id="device-ram">
+                <option value="2GB / 3GB">2GB / 3GB RAM</option>
+                <option value="4GB / 6GB" selected>4GB / 6GB RAM</option>
+                <option value="8GB / 12GB+">8GB / 12GB+ RAM (High End)</option>
+            </select>
+        </div>
+
+        <button class="action-btn" onclick="generateSensitivity()">Generate Sensitivity</button>
+
+        <div id="result-container" class="result-box">
+            <h3 id="res-mode-title" style="color:#ff3333; font-size:13px; text-align:center; margin-bottom:10px; text-transform:uppercase;">Config Generated</h3>
+            <div class="sens-row"><span>General:</span> <span id="s-gen">-</span></div>
+            <div class="sens-row"><span>Red Dot:</span> <span id="s-red">-</span></div>
+            <div class="sens-row"><span>2x Scope:</span> <span id="s-2x">-</span></div>
+            <div class="sens-row"><span>4x Scope:</span> <span id="s-4x">-</span></div>
+            <div class="sens-row"><span>Sniper Scope:</span> <span id="s-sniper">-</span></div>
+            <div class="sens-row" style="border:none;"><span>Free Camera:</span> <span id="s-freecam">-</span></div>
+            <div class="sens-row" style="border:none; margin-top:4px;"><span id="s-guarantee" style="width:100%; text-align:center; color:#00cc44; font-weight:bold;">✔ Headshot Guarantee: 20% to 30%</span></div>
+        </div>
+
+        <div class="developer-tag">DEVELOPED BY AROON PLAYZ</div>
+    </div>
+
+    <!-- 6. ADMIN LOGIN SCREEN -->
+    <div id="admin-login-screen" class="screen">
+        <h2>Admin Login</h2>
+        <p class="desc-txt">Enter Admin Secret Password</p>
+        
+        <form onsubmit="handleAdminLogin(event)">
+            <div class="input-group">
+                <label for="admin-pass">Admin Password</label>
+                <input type="password" id="admin-pass" placeholder="Enter secret password" required>
+            </div>
+            <div id="admin-err" class="error-msg">⚠️ Wrong Admin Password!</div>
+            <button type="submit" class="action-btn" style="background: linear-gradient(135deg, #ff9900, #cc6600);">Access Dashboard</button>
+        </form>
+        <button class="admin-link-btn" onclick="showScreen('login-screen')">⬅ Back to User Login</button>
+        <div class="developer-tag">DEVELOPED BY AROON PLAYZ</div>
+    </div>
+
+    <!-- 7. ADMIN DASHBOARD SCREEN -->
+    <div id="admin-dashboard-screen" class="screen" style="max-width: 650px;">
+        <h2>🛠️ Admin Panel</h2>
+        <p class="desc-txt">Monitor all registered users & active plans</p>
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <div style="flex: 1; background: #161616; padding: 10px; border-radius: 6px; border: 1px solid #444; text-align: center;">
+                <span style="font-size: 11px; color: #aaa; display: block;">Total Users</span>
+                <span id="admin-total-users" style="font-size: 18px; color: #ff9900; font-weight: bold;">0</span>
+            </div>
+            <div style="flex: 1; background: #161616; padding: 10px; border-radius: 6px; border: 1px solid #444; text-align: center;">
+                <span style="font-size: 11px; color: #aaa; display: block;">Pro Users</span>
+                <span id="admin-pro-users" style="font-size: 18px; color: #00cc44; font-weight: bold;">0</span>
+            </div>
+        </div>
+
+        <div style="max-height: 250px; overflow-y: auto; margin-bottom: 15px;" id="admin-users-list-container">
+            <!-- Dynamic users list loads here -->
+        </div>
+
+        <button class="action-btn" style="background: #333;" onclick="showScreen('login-screen')">Logout Admin</button>
+        <div class="developer-tag">DEVELOPED BY AROON PLAYZ</div>
+    </div>
+
+    <!-- POPUP MODAL FOR PRO PLANS & ACTIVATION -->
+    <div id="pro-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProModal()">&times;</span>
+            <h2 style="font-size: 20px; color: #ff9900; margin-bottom: 5px;">⚡ PRO PLANS & KEYS</h2>
+            <p style="font-size: 11px; color: #aaa; margin-bottom: 15px;">Buy plans via Instagram DM & activate below</p>
+
+            <div class="pro-card">
+                <div class="pro-info">
+                    <h3>Starter Pro (45% HS)</h3>
+                    <p>Rs. 150 / 10 Days</p>
+                    <span id="badge-starter" class="plan-status-badge">Not Active</span>
+                </div>
+                <a href="https://instagram.com/aroonplayzofficial?igsh=aWtuY2Vpdm04YzNp" target="_blank" class="insta-buy-btn">Buy Insta DM</a>
+            </div>
+
+            <div class="pro-card">
+                <div class="pro-info">
+                    <h3>Advanced VIP (65% HS)</h3>
+                    <p>Rs. 300 / 10 Days</p>
+                    <span id="badge-advanced" class="plan-status-badge">Not Active</span>
+                </div>
+                <a href="https://instagram.com/aroonplayzofficial?igsh=aWtuY2Vpdm04YzNp" target="_blank" class="insta-buy-btn">Buy Insta DM</a>
+            </div>
+
+            <div class="pro-card">
+                <div class="pro-info">
+                    <h3>Legendary Extreme (85% HS)</h3>
+                    <p>Rs. 500 / 10 Days</p>
+                    <span id="badge-legendary" class="plan-status-badge">Not Active</span>
+                </div>
+                <a href="https://instagram.com/aroonplayzofficial?igsh=aWtuY2Vpdm04YzNp" target="_blank" class="insta-buy-btn">Buy Insta DM</a>
+            </div>
+
+            <div class="key-box">
+                <div class="input-group" style="margin-bottom:8px;">
+                    <label for="activation-key-input" style="color: #00cc44;">Enter 10-Day Activation Key</label>
+                    <input type="text" id="activation-key-input" placeholder="Paste your purchased key here">
+                </div>
+                <button class="action-btn" style="padding:10px; margin-top:5px; background: linear-gradient(135deg, #00cc44, #009933);" onclick="activateKey()">Activate Key</button>
+                <div id="key-status-msg" class="key-status"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP MODAL FOR USER PROFILE & SIGN OUT -->
+    <div id="profile-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProfileModal()">&times;</span>
+            <h2 style="font-size: 20px; color: #ff3333; margin-bottom: 5px;">👤 USER INFORMATION</h2>
+            <p style="font-size: 11px; color: #aaa; margin-bottom: 15px;">Your account details and status</p>
+
+            <div class="profile-row">
+                <span>Full Name:</span>
+                <span id="profile-modal-name">-</span>
+            </div>
+            <div class="profile-row">
+                <span>Email:</span>
+                <span id="profile-modal-email">-</span>
+            </div>
+            <div class="profile-row">
+                <span>Current Plan:</span>
+                <span id="profile-modal-status">-</span>
+            </div>
+            <div class="profile-row" style="border:none;">
+                <span>Time Left:</span>
+                <span id="profile-modal-time">-</span>
+            </div>
+
+            <button class="action-btn" style="background: linear-gradient(135deg, #cc0000, #990000); margin-top: 15px;" onclick="handleSignOut()">Sign Out</button>
+        </div>
+    </div>
+
+    <script>
+        let usersDB = JSON.parse(localStorage.getItem('ap_users')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('ap_current_user')) || null;
+        let isSocialVerified = localStorage.getItem('ap_social_verified') === 'true';
+        
+        let followedStatus = { yt: false, tk: false, ig: false };
+
+        const validKeys = {
+            "AP-PRO-101": "starter", "AP-PRO-102": "starter", "AP-PRO-103": "starter", "AP-PRO-104": "starter", "AP-PRO-105": "starter",
+            "AP-VIP-201": "advanced", "AP-VIP-202": "advanced", "AP-VIP-203": "advanced", "AP-VIP-204": "advanced", "AP-VIP-205": "advanced",
+            "AP-EXT-301": "legendary", "AP-EXT-302": "legendary", "AP-EXT-303": "legendary", "AP-EXT-304": "legendary", "AP-EXT-305": "legendary"
+        };
+
+        window.onload = function() {
+            setTimeout(() => {
+                if (!isSocialVerified) {
+                    showScreen('social-verify-screen');
+                } else if (currentUser) {
+                    checkAndUpdateExpiry(currentUser);
+                    showScreen('dashboard-screen');
+                    setupDashboard();
+                } else {
+                    showScreen('register-screen');
+                }
+            }, 2000);
+        };
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
+            document.getElementById(screenId).classList.add('active-screen');
+        }
+
+        function markFollowed(platform) {
+            followedStatus[platform] = true;
+            document.getElementById(`link-${platform}`).classList.add('clicked');
+            document.getElementById(`link-${platform}`).innerText = "✔ Completed";
+
+            let count = Object.values(followedStatus).filter(Boolean).length;
+            const btn = document.getElementById('verify-follow-btn');
+
+            if (count === 3) {
+                btn.removeAttribute('disabled');
+                btn.style.background = "linear-gradient(135deg, #00cc44, #009933)";
+                btn.innerText = "✔ Click Here to Verify Follow Status";
+            } else {
+                btn.innerText = `🔒 Verify Status Follow (${count}/3 Completed)`;
+            }
+        }
+
+        function verifySocialFollow() {
+            const btn = document.getElementById('verify-follow-btn');
+            btn.innerText = "⏳ Checking Status...";
+            btn.style.opacity = "0.7";
+            
+            setTimeout(() => {
+                isSocialVerified = true;
+                localStorage.setItem('ap_social_verified', 'true');
+                
+                if (currentUser) {
+                    showScreen('dashboard-screen');
+                    setupDashboard();
+                } else {
+                    showScreen('register-screen');
+                }
+            }, 2000);
+        }
+
+        function openProModal() {
+            document.getElementById('pro-modal').style.display = 'flex';
+            updatePlanBadgesUI();
+        }
+
+        function closeProModal() {
+            document.getElementById('pro-modal').style.display = 'none';
+        }
+
+        function openProfileModal() {
+            if (!currentUser) return;
+            checkAndUpdateExpiry(currentUser);
+
+            document.getElementById('profile-modal-name').innerText = currentUser.name;
+            document.getElementById('profile-modal-email').innerText = currentUser.email;
+            document.getElementById('profile-modal-status').innerText = currentUser.status;
+
+            let timeLeftText = "Free / No Expiry";
+            if (currentUser.expiryTime) {
+                let diffDays = Math.ceil((currentUser.expiryTime - new Date().getTime()) / (1000 * 60 * 60 * 24));
+                timeLeftText = diffDays > 0 ? `${diffDays} Days Left` : "Expired";
+            }
+            document.getElementById('profile-modal-time').innerText = timeLeftText;
+
+            document.getElementById('profile-modal').style.display = 'flex';
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profile-modal').style.display = 'none';
+        }
+
+        function handleSignOut() {
+            currentUser = null;
+            localStorage.removeItem('ap_current_user');
+            closeProfileModal();
+            showScreen('login-screen');
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const pass = document.getElementById('reg-pass').value.trim();
+            const err = document.getElementById('reg-error');
+
+            let exists = usersDB.find(u => u.email === email);
+            if (exists) {
+                err.innerText = "⚠️ Email already registered! Please login.";
+                err.style.display = 'block';
+                return;
+            }
+
+            let newUser = {
+                name: name,
+                email: email,
+                pass: pass,
+                status: "Free",
+                tier: "free",
+                expiryTime: null,
+                usedKey: null
+            };
+
+            usersDB.push(newUser);
+            localStorage.setItem('ap_users', JSON.stringify(usersDB));
+            
+            err.style.display = 'none';
+            showScreen('login-screen');
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('log-email').value.trim();
+            const pass = document.getElementById('log-pass').value.trim();
+            const err = document.getElementById('log-error');
+
+            let found = usersDB.find(u => u.email === email && u.pass === pass);
+            if (found) {
+                currentUser = found;
+                checkAndUpdateExpiry(currentUser);
+                localStorage.setItem('ap_current_user', JSON.stringify(currentUser));
+                err.style.display = 'none';
+                showScreen('dashboard-screen');
+                setupDashboard();
+            } else {
+                err.style.display = 'block';
+            }
+        }
+
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            const pass = document.getElementById('admin-pass').value.trim();
+            const err = document.getElementById('admin-err');
+
+            if (pass === "asjadadmin123") {
+                err.style.display = 'none';
+                document.getElementById('admin-pass').value = "";
+                loadAdminDashboard();
+                showScreen('admin-dashboard-screen');
+            } else {
+                err.style.display = 'block';
+            }
+        }
+
+        function loadAdminDashboard() {
+            const container = document.getElementById('admin-users-list-container');
+            container.innerHTML = "";
+            
+            usersDB.forEach(u => checkAndUpdateExpiry(u));
+            localStorage.setItem('ap_users', JSON.stringify(usersDB));
+
+            document.getElementById('admin-total-users').innerText = usersDB.length;
+            let proCount = usersDB.filter(u => u.tier !== "free" && !u.status.includes("Expired")).length;
+            document.getElementById('admin-pro-users').innerText = proCount;
+
+            if (usersDB.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:#777; font-size:12px;">No registered users yet.</p>`;
+                return;
+            }
+
+            usersDB.forEach((u, index) => {
+                let timeLeftText = "Free User";
+                if (u.expiryTime) {
+                    let diffDays = Math.ceil((u.expiryTime - new Date().getTime()) / (1000 * 60 * 60 * 24));
+                    timeLeftText = diffDays > 0 ? `${diffDays} Days Left` : "Expired";
+                }
+
+                let card = document.createElement('div');
+                card.className = "admin-user-card";
+                card.innerHTML = `
+                    <strong>#${index + 1} - ${u.name}</strong><br>
+                    <span>Email:</span> ${u.email}<br>
+                    <span>Status:</span> <b style="color:${u.tier !== 'free' ? '#00cc44' : '#ff9999'}">${u.status}</b> (${timeLeftText})
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function setupDashboard() {
+            checkAndUpdateExpiry(currentUser);
+            document.getElementById('welcome-user-txt').innerText = `Welcome, ${currentUser.name} (${currentUser.status})`;
+        }
+
+        function updatePlanBadgesUI() {
+            if (!currentUser) return;
+            checkAndUpdateExpiry(currentUser);
+
+            let activeTier = (currentUser.tier && !currentUser.status.includes("Expired")) ? currentUser.tier : "free";
+
+            document.getElementById('badge-starter').innerText = "Not Active";
+            document.getElementById('badge-starter').style.color = "#777";
+
+            document.getElementById('badge-advanced').innerText = "Not Active";
+            document.getElementById('badge-advanced').style.color = "#777";
+
+            document.getElementById('badge-legendary').innerText = "Not Active";
+            document.getElementById('badge-legendary').style.color = "#777";
+
+            if (activeTier !== "free") {
+                let badge = document.getElementById(`badge-${activeTier}`);
+                if (badge) {
+                    badge.innerText = "✔ ACTIVE (10 Days Left)";
+                    badge.style.color = "#00cc44";
+                }
+            }
+        }
+
+        function generateSensitivity() {
+            const dev = document.getElementById('device-name').value.trim();
+            const gameVer = document.getElementById('game-version').value;
+            const ramVal = document.getElementById('device-ram').value;
+
+            if (!dev) {
+                alert('Please enter your device model!');
+                return;
+            }
+
+            checkAndUpdateExpiry(currentUser);
+            let userTier = currentUser.tier || "free";
+            if (userTier !== "free" && currentUser.status.includes("Expired")) {
+                userTier = "free";
+            }
+
+            let nameHash = 0;
+            for (let i = 0; i < dev.length; i++) {
+                nameHash += dev.charCodeAt(i);
+            }
+
+            let gen = 75, red = 80, x2 = 78, x4 = 82, sniper = 50, freecam = 65;
+            let modeText = `${gameVer} (${ramVal}) - Free Mode`;
+            let guaranteeText = `✔ Headshot Guarantee: 20% to 30% (${dev})`;
+
+            if (userTier === "starter") {
+                gen = 85 + (nameHash % 5); red = 88 + (nameHash % 4); x2 = 86 + (nameHash % 5); x4 = 90 + (nameHash % 4); sniper = 58 + (nameHash % 4); freecam = 72 + (nameHash % 5);
+                modeText = `${gameVer} (${ramVal}) - Starter Pro`;
+                guaranteeText = `✔ Headshot Guarantee: 45% (${dev})`;
+            } else if (userTier === "advanced") {
+                gen = 91 + (nameHash % 4); red = 93 + (nameHash % 3); x2 = 92 + (nameHash % 4); x4 = 95 + (nameHash % 3); sniper = 65 + (nameHash % 3); freecam = 79 + (nameHash % 4);
+                modeText = `${gameVer} (${ramVal}) - Advanced VIP`;
+                guaranteeText = `✔ Headshot Guarantee: 65% (${dev})`;
+            } else if (userTier === "legendary") {
+                gen = 96 + (nameHash % 3); red = 98 + (nameHash % 2); x2 = 97 + (nameHash % 3); x4 = 99 + (nameHash % 2); sniper = 72 + (nameHash % 2); freecam = 86 + (nameHash % 3);
+                modeText = `${gameVer} (${ramVal}) - Legendary Extreme`;
+                guaranteeText = `✔ Headshot Guarantee: 85% (${dev})`;
+            } else {
+                gen = 72 + (nameHash % 8); red = 78 + (nameHash % 8); x2 = 75 + (nameHash % 8); x4 = 80 + (nameHash % 8); sniper = 48 + (nameHash % 8); freecam = 60 + (nameHash % 8);
+            }
+
+            document.getElementById('res-mode-title').innerText = modeText;
+            document.getElementById('s-gen').innerText = gen;
+            document.getElementById('s-red').innerText = red;
+            document.getElementById('s-2x').innerText = x2;
+            document.getElementById('s-4x').innerText = x4;
+            document.getElementById('s-sniper').innerText = sniper;
+            document.getElementById('s-freecam').innerText = freecam;
+            document.getElementById('s-guarantee').innerText = guaranteeText;
+
+            document.getElementById('result-container').style.display = 'block';
+        }
+
+        function activateKey() {
+            const keyInput = document.getElementById('activation-key-input').value.trim();
+            const msg = document.getElementById('key-status-msg');
+
+            let tierFound = validKeys[keyInput];
+            if (!tierFound) {
+                msg.style.color = "#ff3333";
+                msg.innerText = "❌ Invalid Key!";
+                return;
+            }
+
+            let keyAlreadyUsed = usersDB.some(u => u.usedKey === keyInput);
+            if (keyAlreadyUsed) {
+                msg.style.color = "#ff3333";
+                msg.innerText = "❌ This key has already been redeemed!";
+                return;
+            }
+
+            let expiryTimestamp = new Date().getTime() + (10 * 24 * 60 * 60 * 1000);
+
+            currentUser.expiryTime = expiryTimestamp;
+            currentUser.usedKey = keyInput;
+            currentUser.tier = tierFound;
+            currentUser.status = `Pro (${tierFound.toUpperCase()})`;
+
+            let idx = usersDB.findIndex(u => u.email === currentUser.email);
+            if (idx !== -1) {
+                usersDB[idx] = currentUser;
+                localStorage.setItem('ap_users', JSON.stringify(usersDB));
+                localStorage.setItem('ap_current_user', JSON.stringify(currentUser));
+            }
+
+            msg.style.color = "#00cc44";
+            msg.innerText = `✔ Success! ${tierFound.toUpperCase()} Plan Activated for 10 Days!`;
+            setupDashboard();
+            updatePlanBadgesUI();
+        }
+
+        function checkAndUpdateExpiry(userObj) {
+            if (userObj && userObj.expiryTime) {
+                let currentTime = new Date().getTime();
+                if (currentTime > userObj.expiryTime) {
+                    userObj.status = "Expired (Free)";
+                    userObj.tier = "free";
+                    userObj.expiryTime = null;
+                    userObj.usedKey = null;
+                    let idx = usersDB.findIndex(u => u.email === userObj.email);
+                    if (idx !== -1) {
+                        usersDB[idx] = userObj;
+                        localStorage.setItem('ap_users', JSON.stringify(usersDB));
+                        localStorage.setItem('ap_current_user', JSON.stringify(userObj));
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
