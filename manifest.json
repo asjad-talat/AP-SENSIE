@@ -1,11 +1,15 @@
 {
-  "background_color": "#ffffff",
-  "dir": "ltr",
-  "display": "standalone",
-  "name": "AROON PLAYZ",
-  "orientation": "any",
-  "scope": "/",
-  "short_name": "ap.sensi.app",
+  "name": "Aroon Playz - Sensi Portal",
+  "short_name": "Aroon Playz",
   "start_url": "/",
-  "theme_color": "#ffffff"
+  "display": "standalone",
+  "background_color": "#030303",
+  "theme_color": "#ff3333",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
